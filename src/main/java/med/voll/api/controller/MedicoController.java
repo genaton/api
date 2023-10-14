@@ -7,6 +7,9 @@ import med.voll.api.medico.DadosListagemMedico;
 import med.voll.api.medico.Medico;
 import med.voll.api.medico.MedicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +32,24 @@ public class MedicoController {
 //        System.out.println(dados);
        repository.save(new Medico(dados));
     }
+    // sem paginacao
+//    @GetMapping
+//    public List<DadosListagemMedico> listar(){
+//        return repository.findAll().stream().map(DadosListagemMedico::new).toList();
+//    }
+
+
+    // implementando paginacao para atender a regra de negocios. O codigo abaixo traz a paginacao padrao
+//    @GetMapping
+//    public Page<DadosListagemMedico> listar(Pageable paginacao){
+//        return repository.findAll(paginacao).map(DadosListagemMedico::new);
+//    }
+
+    // presonalizando a paginacao para atender as regras de negócios: 10 registros por pag e em ordem alfabetica pelo nome do medico
     @GetMapping
-    public List<DadosListagemMedico> listar(){
-        return repository.findAll().stream().map(DadosListagemMedico::new).toList();
+    public Page<DadosListagemMedico> listar(@PageableDefault(size=10, sort = {"nome"}) Pageable paginacao){
+        return repository.findAll(paginacao).map(DadosListagemMedico::new);
     }
+
 
 }

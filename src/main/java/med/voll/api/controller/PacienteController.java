@@ -23,10 +23,17 @@ public class PacienteController {
         repository.save(new Paciente(dados));
     }
 
+//    @GetMapping
+//    public Page<DadosListagemPaciente> listar(@PageableDefault(size=10, sort = {"nome"}) Pageable paginacao){
+//        return repository.findAll(paginacao).map(DadosListagemPaciente::new);
+//    }
+
     @GetMapping
     public Page<DadosListagemPaciente> listar(@PageableDefault(size=10, sort = {"nome"}) Pageable paginacao){
-        return repository.findAll(paginacao).map(DadosListagemPaciente::new);
+        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemPaciente::new);
     }
+
+
 
     @PutMapping
     @Transactional
@@ -37,10 +44,18 @@ public class PacienteController {
     }
 
     // metodo para exclusao definitiva (fisica) no banco de dados.
+//    @DeleteMapping("/{id}")
+//    @Transactional
+//    public void excluir(@PathVariable Long id){
+//        repository.deleteById(id);
+//
+//    }
+
     @DeleteMapping("/{id}")
     @Transactional
     public void excluir(@PathVariable Long id){
-        repository.deleteById(id);
+        var paciente = repository.getReferenceById(id);
+        paciente.excluir();
 
     }
 }

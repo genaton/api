@@ -43,9 +43,15 @@ public class MedicoController {
 //    }
 
     // presonalizando a paginacao para atender as regras de negócios: 10 registros por pag e em ordem alfabetica pelo nome do medico
+//    @GetMapping
+//    public Page<DadosListagemMedico> listar(@PageableDefault(size=10, sort = {"nome"}) Pageable paginacao){
+//        return repository.findAll(paginacao).map(DadosListagemMedico::new);
+//    }
+
+    // exibindo apenas medicos ativos.  findAllByAtivoTrue é criado no MedicoRepository.
     @GetMapping
     public Page<DadosListagemMedico> listar(@PageableDefault(size=10, sort = {"nome"}) Pageable paginacao){
-        return repository.findAll(paginacao).map(DadosListagemMedico::new);
+        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
     }
 
     @PutMapping
@@ -56,13 +62,21 @@ public class MedicoController {
 
     }
     // metodo para exclusao definitiva (fisica) no banco de dados.
+//    @DeleteMapping("/{id}")
+//    @Transactional
+//    public void excluir(@PathVariable Long id){
+//       repository.deleteById(id);
+//
+//    }
+
+    // excluir dados do medico apenas logico (sem exclusao permanete) apenas inativando o cadastro.
     @DeleteMapping("/{id}")
     @Transactional
     public void excluir(@PathVariable Long id){
-       repository.deleteById(id);
+        var medico = repository.getReferenceById(id);
+        medico.excluir();
 
     }
-
 
 
 

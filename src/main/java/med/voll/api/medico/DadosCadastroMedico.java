@@ -15,6 +15,8 @@ public record DadosCadastroMedico(
         @Email
         String email,
         @NotBlank
+        String telefone, // alterou as regras de negocios exigindo o telefone do medico
+        @NotBlank
         @Pattern(regexp = "\\d{4,6}")
         String crm,
         @NotNull // atributo nao pode ser nulo como eh enum o campo tem preechimento obrigatorio

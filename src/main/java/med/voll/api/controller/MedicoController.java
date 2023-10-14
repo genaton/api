@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import jakarta.validation.Valid;
 import med.voll.api.endereco.Endereco;
 import med.voll.api.medico.DadosCadastroMedico;
 import med.voll.api.medico.Medico;
@@ -24,7 +25,7 @@ public class MedicoController {
 //    }
    @PostMapping //verbo de requisicao do metodo
    @Transactional // anotacao para inserir dados na tabela do banco de dados.
-     public void cadastrar(@RequestBody DadosCadastroMedico dados){ // anotacao @RequestBody. Para receber as conteudo json fragmentado eh necessario criar classes que contenham metodos com paramentros com nomes identicos (case sensitive) aos ados contidos no json
+     public void cadastrar(@RequestBody @Valid DadosCadastroMedico dados){ // anotacao @RequestBody. Para receber as conteudo json fragmentado eh necessario criar classes que contenham metodos com paramentros com nomes identicos (case sensitive) aos ados contidos no json
 //        System.out.println(dados);
        repository.save(new Medico(dados));
 

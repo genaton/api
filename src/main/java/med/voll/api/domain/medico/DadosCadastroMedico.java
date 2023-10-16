@@ -1,11 +1,12 @@
-package med.voll.api.medico;
+package med.voll.api.domain.medico;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
-import med.voll.api.endereco.DadosEndereco;
+import med.voll.api.domain.endereco.DadosEndereco;
+
 //usando as anotacoes do bean validation
 public record DadosCadastroMedico(
       //  @NotNull // atributo nome nao pode ser nulo
@@ -23,5 +24,5 @@ public record DadosCadastroMedico(
         Especialidade especialidade,
         @NotNull
         @Valid // DadosEndereco eh uma outra classe DTO e esta anotacao eh para validar esta classe
-        DadosEndereco endereco ) {
+      DadosEndereco endereco ) {
 }

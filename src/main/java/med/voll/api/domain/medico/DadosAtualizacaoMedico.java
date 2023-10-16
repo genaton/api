@@ -1,8 +1,8 @@
-package med.voll.api.medico;
+package med.voll.api.domain.medico;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import med.voll.api.endereco.DadosEndereco;
+import med.voll.api.domain.endereco.DadosEndereco;
 
 // regra de negocio: podem ser atualizados apenas os seguintes dados Telefone, Nome e Endereco.
 public record DadosAtualizacaoMedico(

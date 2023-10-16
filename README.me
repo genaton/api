@@ -628,4 +628,53 @@ public record DadosCadastroMedico(
      Você pode conferir as principais formas de autenticação lendo este
 https://www.alura.com.br/artigos/tipos-de-autenticacao?_gl=1*modu3x*_ga*MTM1MDU0NzIwMS4xNjY0MDQ5NDQ5*_ga_1EPWSW3PCS*MTY5NzQ5NjQ3Ny43MS4xLjE2OTc0OTY0NzcuMC4wLjA.*_fplc*dVljMGclMkI3UDJqT3BQRG9uV1BZSXIzRG9IZnBsOTVKYzMzdG9nSDJaclhTazgxZFVyWG11bVN5RVBXbHdkc1QzVXIzckF0UkFwbnZQeUY3Rld2JTJCQWklMkJIdUZCc2FWbjdyM0t4TUpUbFMzNnklMkJQMnA3YmluemklMkJlVDNHYmZHdyUzRCUzRA..
 
+Para saber mais: hashing de senha
 
+Ao implementar uma funcionalidade de autenticação em uma aplicação, independente da linguagem de programação utilizada, você terá que lidar com os dados de login e senha dos usuários, sendo que eles precisarão ser armazenados em algum local, como, por exemplo, um banco de dados.
+
+Senhas são informações sensíveis e não devem ser armazenadas em texto aberto, pois se uma pessoa mal intencionada conseguir obter acesso ao banco de dados, ela conseguirá ter acesso às senhas de todos os usuários. Para evitar esse problema, você deve sempre utilizar algum algoritmo de hashing nas senhas antes de armazená-las no banco de dados.
+
+Hashing nada mais é do que uma função matemática que converte um texto em outro texto totalmente diferente e de difícil dedução. Por exemplo, o texto Meu nome é Rodrigo pode ser convertido para o texto 8132f7cb860e9ce4c1d9062d2a5d1848, utilizando o algoritmo de hashing MD5.
+
+Um detalhe importante é que os algoritmos de hashing devem ser de mão única, ou seja, não deve ser possível obter o texto original a partir de um hash. Dessa forma, para saber se um usuário digitou a senha correta ao tentar se autenticar em uma aplicação, devemos pegar a senha que foi digitada por ele e gerar o hash dela, para então realizar a comparação com o hash que está armazenado no banco de dados.
+
+Existem diversos algoritmos de hashing que podem ser utilizados para fazer essa transformação nas senhas dos usuários, sendo que alguns são mais antigos e não mais considerados seguros hoje em dia, como o MD5 e o SHA1. Os principais algoritmos recomendados atualmente são:
+
+Bcrypt
+Scrypt
+Argon2
+PBKDF2
+
+Ao longo do curso utilizaremos o algoritmo BCrypt, que é bastante popular atualmente. Essa opção também leva em consideração o fato de que o Spring Security já nos fornece uma classe que o implementa.
+
+Para saber mais: documentação Spring Data
+Conforme aprendido em vídeos anteriores, o Spring Data utiliza um padrão próprio de nomenclatura de métodos que devemos seguir para que ele consiga gerar as queries SQL de maneira correta.
+
+Existem algumas palavras reservadas que devemos utilizar nos nomes dos métodos, como o findBy e o existsBy, para indicar ao Spring Data como ele deve montar a consulta que desejamos. Esse recurso é bastante flexível, podendo ser um pouco complexo devido às diversas possibilidades existentes.
+Para conhecer mais detalhes e entender melhor como montar consultas dinâmicas com o Spring Data, acesse:
+https://docs.spring.io/spring-data/jpa/docs/current/reference/html/
+
+Mudanças na versão 3.1
+ATENÇÃO!
+
+A partir da versão 3.1 do Spring Boot algumas mudanças foram realizadas, em relação às configurações de segurança. Caso você esteja utilizando o Spring Boot nessa versão, ou em versões posteriores, o código demonstrado no vídeo anterior vai apresentar um aviso de deprecated, por conta de tais mudanças.
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    return http.csrf(csrf -> csrf.disable())
+            .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .build();
+}
+
+---- código anterior ao spring 3.1 ----
+@Configuration
+@EnableWebSecurity
+public class SecurityConfigurations {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and().build();
+    }
+
+}
+----

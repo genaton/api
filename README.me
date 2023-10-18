@@ -678,3 +678,26 @@ public class SecurityConfigurations {
 
 }
 ----
+JSON Web Token, ou JWT, é um padrão utilizado para a geração de tokens, que nada mais são do que Strings, representando, de maneira segura, informações que serão compartilhadas entre dois sistemas. Você pode conhecer melhor sobre esse padrão em seu site oficial.
+https://jwt.io/introduction
+
+Aqui na Alura temos o artigo O que é JSON Web Tokens?(https://www.alura.com.br/artigos/o-que-e-json-web-tokens?_gl=1*1pzra4m*_ga*MTM1MDU0NzIwMS4xNjY0MDQ5NDQ5*_ga_1EPWSW3PCS*MTY5NzUzNzkwNy43My4xLjE2OTc1Mzg2MDIuMC4wLjA.*_fplc*R1VpTVNuVVRQMFNEelZNOGo3R3VickRNNkolMkZXbG94Wjd4QWxOV2tMUWdQVG51U0kzVGpHNFVIbnFMZUVTVVRxOGpTNnRiUE1oMnJyTllLVTFhRmV4YkdCRjVDbEIlMkIlMkJZUnZsRTNjcjI0TGRBeiUyQiUyQnkzRnJWVzBHNThHVDVsZyUzRCUzRA..)
+ e o Alura+ O que é Json Web Token (JWT)(https://unibb.alura.com.br/extra/alura-mais/o-que-e-json-web-token-jwt--c203?_gl=1*1rjw6z5*_ga*MTM1MDU0NzIwMS4xNjY0MDQ5NDQ5*_ga_1EPWSW3PCS*MTY5NzUzNzkwNy43My4xLjE2OTc1Mzg3MDMuMC4wLjA.*_fplc*R1VpTVNuVVRQMFNEelZNOGo3R3VickRNNkolMkZXbG94Wjd4QWxOV2tMUWdQVG51U0kzVGpHNFVIbnFMZUVTVVRxOGpTNnRiUE1oMnJyTllLVTFhRmV4YkdCRjVDbEIlMkIlMkJZUnZsRTNjcjI0TGRBeiUyQiUyQnkzRnJWVzBHNThHVDVsZyUzRCUzRA..)?
+ , que também explicam o funcionamento do padrão JWT.
+
+ // variavel criada para a classe TokenService em application.properties.. JWT_SECRET É PARA AMBIENTE DE PRODUCAO. EM AMBIENTE DE DEV PASSA-SE UMA SENHA DEFAUT QUALQUER DEPOIS DOS :
+ api.security.token.secret=${JWT_SECRET:12345678}
+
+ Para saber mais: Outras informações no token
+ Além do Issuer, Subject e data de expiração, podemos incluir outras informações no token JWT, de acordo com as necessidades da aplicação. Por exemplo, podemos incluir o id do usuário no token, para isso basta utilizar o método withClaim:
+
+return JWT.create()
+    .withIssuer("API Voll.med")
+    .withSubject(usuario.getLogin())
+
+    .withClaim("id", usuario.getId())
+
+    .withExpiresAt(dataExpiracao())
+    .sign(algoritmo);
+
+    O método withClaim recebe dois parâmetros, sendo o primeiro uma String que identifica o nome do claim (propriedade armazenada no token), e o segundo a informação que se deseja armazenar.

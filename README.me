@@ -1141,3 +1141,41 @@ ao utilizar o swagger, utilize o padrao json para requisicao, principalmente naq
  Para saber mais detalhes sobre quais informações podem ser configuradas na documentação da API, consulte a especificação OpenAPI no site oficial da iniciativa.
 
  https://spec.openapis.org/oas/latest.html#schema
+
+ FOCO DOS TESTES
+ Deve ser nas classes com as regras de negócios.
+ neste projeto serão
+ as classes controller que controla as requisições e end-points(API)
+ as classes repository que sao responsaveis pelas queries (integracao com o banco de dados).
+
+ Para realizar os testes sera necessário criar um banco de dados de teste
+ neste caso criamos no mysql o vollmed_api_test
+ criar um novo application.properties com o nome application-teste.properties com a seguinte linha
+ spring.datasource.url=jdbc:mysql://localhost/vollmed_api_test
+ e cofigurar na classe de teste com a seguinte anotacao @ActiveProfiles("test")
+
+
+
+Para saber mais: testes com in-memory database
+
+
+Como citado no vídeo anterior, podemos realizar os testes de interfaces repository utilizando um banco de dados em memória, como o H2, ao invés de utilizar o mesmo banco de dados da aplicação.
+
+Caso você queira utilizar essa estratégia de executar os testes com um banco de dados em memória, será necessário incluir o H2 no projeto, adicionando a seguinte dependência no arquivo pom.xml:
+
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <scope>runtime</scope>
+</dependency>
+
+E também deve remover as anotações @AutoConfigureTestDatabase e @ActiveProfiles na classe de teste, deixando-a apenas com a anotação @DataJpaTest:
+
+@DataJpaTest
+class MedicoRepositoryTest {
+
+  //resto do código permanece igual
+
+}
+
+Você também pode apagar o arquivo application-test.properties, pois o Spring Boot realiza as configurações de url, username e password do banco de dados H2 de maneira automática.

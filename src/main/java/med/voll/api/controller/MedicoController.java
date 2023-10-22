@@ -1,5 +1,6 @@
 package med.voll.api.controller;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import med.voll.api.domain.medico.*;
 import med.voll.api.domain.medico.*;
@@ -14,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController // anotacao necessaria para o Spring carregar a classe
 @RequestMapping("/medicos")
+@SecurityRequirement(name ="bearer-key") // anotacao necessaria para disponibilizar a insercao do token na documentacao do swagger/springdoc. Colocar a anotacao antes da classe quando todos os metodos podem ser usados. Quando se quer liberar apenas um metodo basta colocar a anotacao acima dele e nao acima da classe.
 public class MedicoController {
 
     @Autowired // Injeção de dependencias

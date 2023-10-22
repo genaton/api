@@ -23,6 +23,8 @@ public interface MedicoRepository extends JpaRepository<Medico, Long> {
                 from Consulta c 
                 where 
                 c.data = :data
+            and
+                c.motivoCancelamento is null
             )
             order by rand()
             limit 1

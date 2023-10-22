@@ -1075,3 +1075,69 @@ Estes dois episódios do podcast Hipsters.Tech foram dedicados ao tema SOLID:
 
 https://unibb.alura.com.br/extra/hipsterstech/praticas-de-orientacao-a-objetos-hipsters-129-a453?_gl=1*dmswy9*_ga*MTM1MDU0NzIwMS4xNjY0MDQ5NDQ5*_ga_1EPWSW3PCS*MTY5Nzc5Njk0NC44NC4xLjE2OTc3OTgwMjguMC4wLjA.*_fplc*UWxDN3Q0bFZmZU1ZakZ4MERNS0xsdSUyQndlbGhJJTJCJTJGcTNsaXJvUVB0YnglMkJZUW5menZjcDFNbjNwN0gwQmhxemVENlRuUW1Yd0xzMFFnU05OTmpsVHJSajV6anFJY1FNJTJGenBVbiUyQmlhd3VqUEVRRFhGNWg2UXFQc0xvM1NCVWpRJTNEJTNE
 https://unibb.alura.com.br/extra/hipsterstech/solid-codigo-bom-e-bonito-hipsters-ponto-tech-219-a649?_gl=1*nxyexl*_ga*MTM1MDU0NzIwMS4xNjY0MDQ5NDQ5*_ga_1EPWSW3PCS*MTY5Nzc5Njk0NC44NC4xLjE2OTc3OTgwODEuMC4wLjA.*_fplc*UWxDN3Q0bFZmZU1ZakZ4MERNS0xsdSUyQndlbGhJJTJCJTJGcTNsaXJvUVB0YnglMkJZUW5menZjcDFNbjNwN0gwQmhxemVENlRuUW1Yd0xzMFFnU05OTmpsVHJSajV6anFJY1FNJTJGenBVbiUyQmlhd3VqUEVRRFhGNWg2UXFQc0xvM1NCVWpRJTNEJTNE
+
+
+Para saber mais: OpenAPI Initiative
+
+A documentação é algo muito importante em um projeto, principalmente se ele for uma API Rest, pois nesse caso podemos ter vários clientes que vão precisar se comunicar com ela, necessitando então de uma documentação que os ensinem como realizar essa comunicação de maneira correta.
+
+Por muito tempo não existia um formato padrão de se documentar uma API Rest, até que em 2010 surgiu um projeto conhecido como Swagger, cujo objetivo era ser uma especificação open source para design de APIs Rest. Depois de um tempo, foram desenvolvidas algumas ferramentas para auxiliar pessoas desenvolvedoras a implementar, visualizar e testar suas APIs, como o Swagger UI, Swagger Editor e Swagger Codegen, tornando-se assim muito popular e utilizado ao redor do mundo.
+
+Em 2015, o Swagger foi comprado pela empresa SmartBear Software, que doou a parte da especificação para a fundação Linux. Por sua vez, a fundação renomeou o projeto para OpenAPI. Após isso, foi criada a OpenAPI Initiative, uma organização focada no desenvolvimento e evolução da especificação OpenAPI de maneira aberta e transparente.
+
+A OpenAPI é hoje a especificação mais utilizada, e também a principal, para documentar uma API Rest. A documentação segue um padrão que pode ser descrito no formato yaml ou JSON, facilitando a criação de ferramentas que consigam ler tais arquivos e automatizar a criação de documentações, bem como a geração de códigos para consumo de uma API.
+Você pode obter mais detalhes no site oficial da OpenAPI Initiative.
+https://www.openapis.org/
+
+
+ATENCAO!!!
+ao utilizar o swagger, utilize o padrao json para requisicao, principalmente naquelas que utilizam o verbo GET
+{
+  "page": 0,
+  "size": digite o numero do tamanho desejado...
+ }
+
+
+ Para saber mais: personalizando a documentação
+
+ Vimos no vídeo anterior que é possível personalizar a documentação gerada pelo SpringDoc para a inclusão do token de autenticação. Além do token, podemos incluir outras informações na documentação que fazem parte da especificação OpenAPI, como, por exemplo, a descrição da API, informações de contato e de sua licença de uso.
+
+ Tais configurações devem ser feitas no objeto OpenAPI, que foi configurado na classe SpringDocConfigurations de nosso projeto:
+
+ @Bean
+ public OpenAPI customOpenAPI() {
+     return new OpenAPI()
+             .components(new Components()
+                     .addSecuritySchemes("bearer-key",
+                             new SecurityScheme()
+                                     .type(SecurityScheme.Type.HTTP)
+                                     .scheme("bearer")
+                                     .bearerFormat("JWT")))
+                     .info(new Info()
+                             .title("Voll.med API")
+                             .description("API Rest da aplicação Voll.med, contendo as funcionalidades de CRUD de médicos e de pacientes, além de agendamento e cancelamento de consultas")
+                             .contact(new Contact()
+                                     .name("Time Backend")
+                                     .email("backend@voll.med"))
+                     .license(new License()
+                             .name("Apache 2.0")
+                             .url("http://voll.med/api/licenca")));
+ }
+
+ Usando os imports:
+
+ import io.swagger.v3.oas.models.info.Contact;
+ import io.swagger.v3.oas.models.info.Info;
+ import io.swagger.v3.oas.models.Components;
+ import io.swagger.v3.oas.models.OpenAPI;
+ import io.swagger.v3.oas.models.info.License;
+ import io.swagger.v3.oas.models.security.SecurityScheme;
+ import org.springframework.context.annotation.Bean;
+ import org.springframework.context.annotation.Configuration;
+
+
+ No código anterior, repare que após a configuração do token JWT foram adicionadas as informações da API. Ao entrar novamente na página do Swagger UI, tais informações serão exibidas, conforme demonstrado na imagem a seguir:
+
+ Para saber mais detalhes sobre quais informações podem ser configuradas na documentação da API, consulte a especificação OpenAPI no site oficial da iniciativa.
+
+ https://spec.openapis.org/oas/latest.html#schema

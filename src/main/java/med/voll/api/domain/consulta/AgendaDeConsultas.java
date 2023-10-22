@@ -1,7 +1,8 @@
 package med.voll.api.domain.consulta;
 
 import med.voll.api.domain.ValidacaoException;
-import med.voll.api.domain.consulta.validacoes.ValidadorAgendamentoDeConsulta;
+import med.voll.api.domain.consulta.validacoes.agendamento.ValidadorAgendamentoDeConsulta;
+import med.voll.api.domain.consulta.validacoes.cancelamento.ValidadorCancelamentoDeConsultas;
 import med.voll.api.domain.medico.Medico;
 import med.voll.api.domain.medico.MedicoRepository;
 import med.voll.api.domain.paciente.PacienteRepository;
@@ -21,7 +22,8 @@ public class AgendaDeConsultas {
 
     @Autowired
     private PacienteRepository pacienteRepository;
-
+@Autowired
+    private List<ValidadorCancelamentoDeConsultas> validadoresCancelamento;
     @Autowired
     private List<ValidadorAgendamentoDeConsulta> validadores; // o spring permite chamar a interface que é usada em cada validador e fazer uma lista de todas as classes de validadores criadas. Isso evita instanciar uma a uma.
     public DadosDetalhamentoConsulta agendar(DadosAgendamentoConsulta dados){
@@ -65,6 +67,9 @@ public class AgendaDeConsultas {
         if(!consultaRepository.existsById(dados.idConsulta())){
             throw new ValidacaoException("Id da consulta informado nao existe");
         }
+
+        validadoresCancelamento.forEach(v -> v.validar(dados));
+
         var consulta = consultaRepository.getReferenceById(dados.idConsulta());
         consulta.cancelar(dados.motivo());
     }
